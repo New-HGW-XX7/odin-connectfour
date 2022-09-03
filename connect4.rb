@@ -27,22 +27,23 @@ class Game
   end
 
   def player_column_choice(player_num)
-    puts "Player #{player_num}, choose a column"
-    gets.chomp.to_i
+    valid_input = false
+    until valid_input
+      puts "Player #{player_num}, choose a column"
+      chosen_column = gets.chomp.to_i
+      puts "Column full." if column_full?(chosen_column)
+      valid_input = true unless column_full?(chosen_column)
+    end
+    chosen_column
   end
 
   def column_full?(column)
     !grid[0][column].nil?
   end
-
-  def game_over?#(chip)
-    column_full?(0) and column_full?(1) and column_full?(2)
-    # or one win checker
-  end
-
-  def take_chip(column, player_num = 0)
-    return puts 'Column full' if column_full?(column)
+  
+  def take_chip(column, player_num)
     player_num == 1 ? chip = Chip.new('Y') : chip = Chip.new('R')
+    
     current_row = 0
     until grid[current_row + 1].nil? or grid[current_row + 1][column].class == Chip
       current_row += 1
@@ -51,6 +52,11 @@ class Game
     chip.row = current_row
     chip.column = column
     chip
+  end
+  
+  def game_over?(chip)
+    column_full?(0) and column_full?(1) and column_full?(2) || 
+    check_win_row(chip) or check_win_column(chip) or check_win_diagonal_left_to_right(chip) or check_win_diagonal_right_to_left(chip)
   end
 
   def check_win_row(chip)
@@ -62,15 +68,15 @@ class Game
       index += 1
       counter += 1
     end
-    # return true if counter == 3
 
     index = chip.column
     until row[index - 1].nil? or row[index - 1].color != chip.color or counter == 3
       index -= 1
       counter += 1
     end
-    # return true if counter == 3
+    
     puts "row-counter: #{counter}"
+    return true if counter == 3
   end
 
   def check_win_column(chip)
@@ -83,8 +89,9 @@ class Game
       counter += 1
     end
 
-    # return true if counter == 3
+    
     puts "col-counter: #{counter}"
+    return true if counter == 3
   end
 
   def check_win_diagonal_left_to_right(chip)
@@ -107,6 +114,7 @@ class Game
     end
 
     puts "dia-left-right-counter: #{counter}"
+    return true if counter == 3
   end
 
   def check_win_diagonal_right_to_left(chip)
@@ -129,6 +137,26 @@ class Game
     end
 
     puts "dia-right-left-counter: #{counter}"
+    return true if counter == 3
+  end
+
+  def play_game
+    over = false
+    player_num = 1
+    until over
+      print_grid
+      player_choice = player_column_choice(player_num)
+      chip = take_chip(player_choice, player_num)
+      if game_over?(chip)
+        over = true
+      else
+        case player_num
+        when 1 then player_num = 2
+        when 2 then player_num = 1
+        end
+      end
+    end
+    print_grid
   end
 end
 
@@ -143,18 +171,7 @@ class Chip
 end
 
 game = Game.new
-game.print_grid
-puts "\n\n"
-game.take_chip(1)
-game.take_chip(1)
-game.take_chip(1)
-game.take_chip(2)
-chip = game.take_chip(0)
-game.print_grid
-game.check_win_row(chip)
-game.check_win_column(chip)
-game.check_win_diagonal_left_to_right(chip)
-game.check_win_diagonal_right_to_left(chip)
+game.play_game
 
 # Player 1 is Y
 # Player 2 is R
