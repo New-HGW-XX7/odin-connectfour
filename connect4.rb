@@ -25,7 +25,13 @@ class Game
       end
     end
   end
+
+  def player_column_choice(player_num)
+    puts "Player #{player_num}, choose a column"
+    gets.chomp
+  end
+   
 end
 
-game = Game.new
-game.print_grid
+# game = Game.new
+# game.print_grid
