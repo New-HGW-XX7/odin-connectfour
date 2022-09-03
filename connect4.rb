@@ -75,7 +75,7 @@ class Game
       counter += 1
     end
     
-    puts "row-counter: #{counter}"
+    #puts "row-counter: #{counter}"
     return true if counter == 3
   end
 
@@ -90,7 +90,7 @@ class Game
     end
 
     
-    puts "col-counter: #{counter}"
+    #puts "col-counter: #{counter}"
     return true if counter == 3
   end
 
@@ -99,7 +99,8 @@ class Game
 
     current_row = chip.row
     current_column = chip.column
-    until grid[current_row - 1].nil? or grid[current_row - 1][current_column - 1].nil? or grid[current_row - 1][current_column -1].color != chip.color or counter == 3
+
+    until grid[current_row - 1].nil? or grid[current_row - 1][current_column - 1].nil? or (current_row - 1) < 0 or (current_column - 1) < 0 or grid[current_row - 1][current_column -1].color != chip.color or counter == 3
       current_row -= 1
       current_column -=1
       counter += 1
@@ -113,7 +114,7 @@ class Game
       counter += 1
     end
 
-    puts "dia-left-right-counter: #{counter}"
+    #puts "dia-left-right-counter: #{counter}"
     return true if counter == 3
   end
 
@@ -122,7 +123,7 @@ class Game
 
     current_row = chip.row
     current_column = chip.column
-    until grid[current_row - 1].nil? or grid[current_row - 1][current_column + 1].nil? or grid[current_row - 1][current_column + 1].color != chip.color or counter == 3
+    until grid[current_row - 1].nil? or grid[current_row - 1][current_column + 1].nil? or (current_row - 1) < 0 or grid[current_row - 1][current_column + 1].color != chip.color or counter == 3
       current_row -= 1
       current_column +=1
       counter += 1
@@ -130,13 +131,13 @@ class Game
 
     current_row = chip.row
     current_column = chip.column
-    until grid[current_row + 1].nil? or grid[current_row + 1][current_column - 1].nil? or grid[current_row + 1][current_column - 1].color != chip.color or counter == 3
+    until grid[current_row + 1].nil? or grid[current_row + 1][current_column - 1].nil? or (current_column - 1) < 0 or grid[current_row + 1][current_column - 1].color != chip.color or counter == 3
       current_row += 1
       current_column -=1
       counter += 1
     end
 
-    puts "dia-right-left-counter: #{counter}"
+    #puts "dia-right-left-counter: #{counter}"
     return true if counter == 3
   end
 
@@ -157,6 +158,11 @@ class Game
       end
     end
     print_grid
+    if check_win_row(chip) or check_win_column(chip) or check_win_diagonal_left_to_right(chip) or check_win_diagonal_right_to_left(chip)
+      puts "Game over. Player #{player_num} wins."
+    else
+      puts 'Game over. Tie.'
+    end
   end
 end
 
