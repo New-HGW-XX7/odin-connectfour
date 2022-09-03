@@ -56,23 +56,36 @@ class Game
 
   def check_win_row(chip)
     row = grid[chip.row]
+    counter = 1
     
     index = chip.column
-    counter = 1
-
     until row[index + 1].nil? or row[index + 1].color != chip.color or counter == 3
       index += 1
       counter += 1
     end
-    puts counter
     # return true if counter == 3
+
     index = chip.column
     until row[index - 1].nil? or row[index - 1].color != chip.color or counter == 3
       index -= 1
       counter += 1
     end
     # return true if counter == 3
-    puts counter
+    puts "row-counter: #{counter}"
+  end
+
+  def check_win_column(chip)
+    current_row = chip.row
+    column = chip.column
+    counter = 1
+
+    until grid[current_row + 1].nil? or grid[current_row + 1][column].color != chip.color or counter == 3
+      current_row += 1
+      counter += 1
+    end
+
+    # return true if counter == 3
+    puts "col-counter: #{counter}"
   end
 end
 
@@ -89,11 +102,12 @@ end
 game = Game.new
 game.print_grid
 puts "\n\n"
-game.take_chip(0)
 game.take_chip(2)
-chip = game.take_chip(1)
+game.take_chip(2)
+chip = game.take_chip(2)
 game.print_grid
 game.check_win_row(chip)
+game.check_win_column(chip)
 
 # Player 1 is Y
 # Player 2 is R
