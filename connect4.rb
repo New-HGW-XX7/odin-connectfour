@@ -108,6 +108,28 @@ class Game
 
     puts "dia-left-right-counter: #{counter}"
   end
+
+  def check_win_diagonal_right_to_left(chip)
+    counter = 1
+
+    current_row = chip.row
+    current_column = chip.column
+    until grid[current_row - 1].nil? or grid[current_row - 1][current_column + 1].nil? or grid[current_row - 1][current_column + 1].color != chip.color or counter == 3
+      current_row -= 1
+      current_column +=1
+      counter += 1
+    end
+
+    current_row = chip.row
+    current_column = chip.column
+    until grid[current_row + 1].nil? or grid[current_row + 1][current_column - 1].nil? or grid[current_row + 1][current_column - 1].color != chip.color or counter == 3
+      current_row += 1
+      current_column -=1
+      counter += 1
+    end
+
+    puts "dia-right-left-counter: #{counter}"
+  end
 end
 
 class Chip
@@ -126,11 +148,13 @@ puts "\n\n"
 game.take_chip(1)
 game.take_chip(1)
 game.take_chip(1)
-chip = game.take_chip(2)
+game.take_chip(2)
+chip = game.take_chip(0)
 game.print_grid
 game.check_win_row(chip)
 game.check_win_column(chip)
 game.check_win_diagonal_left_to_right(chip)
+game.check_win_diagonal_right_to_left(chip)
 
 # Player 1 is Y
 # Player 2 is R
