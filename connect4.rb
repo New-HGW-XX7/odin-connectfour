@@ -1,7 +1,7 @@
 class Game
   attr_accessor :grid
   def initialize
-    @grid = Array.new(3) { Array.new(3, nil) }
+    @grid = Array.new(6) { Array.new(7, nil) }
   end
 
   def print_grid
@@ -10,13 +10,13 @@ class Game
       subarr.each do |value|
         counter += 1
         if value.nil?
-          if counter == 3
+          if counter == 7
             print "[   ]\n"
           else
             print "[   ] "
           end
         else
-          if counter == 3
+          if counter == 7
             print "[ #{value.color} ]\n"
           else
             print "[ #{value.color} ] "
@@ -55,52 +55,56 @@ class Game
   end
   
   def game_over?(chip)
-    column_full?(0) and column_full?(1) and column_full?(2) || 
-    check_win_row(chip) or check_win_column(chip) or check_win_diagonal_left_to_right(chip) or check_win_diagonal_right_to_left(chip)
+    (column_full?(0) and column_full?(1) and column_full?(2) and column_full?(3) and column_full?(4) and column_full?(5) and column_full?(6) or check_win_row(chip)) || (check_win_column(chip) or check_win_diagonal_left_to_right(chip) or check_win_diagonal_right_to_left(chip))
   end
 
   def check_win_row(chip)
+    puts "row is eval"
     row = grid[chip.row]
     counter = 1
-    
+
     index = chip.column
-    until row[index + 1].nil? or row[index + 1].color != chip.color or counter == 3
+    until row[index + 1].nil? or row[index + 1].color != chip.color or counter == 4
+      puts "index: #{index}"
+      puts "counter: #{counter}"
       index += 1
       counter += 1
     end
 
     index = chip.column
-    until row[index - 1].nil? or row[index - 1].color != chip.color or counter == 3
+    until row[index - 1].nil? or (index - 1) < 0 or row[index - 1].color != chip.color or counter == 4
       index -= 1
       counter += 1
     end
     
     #puts "row-counter: #{counter}"
-    return true if counter == 3
+    return true if counter == 4
   end
 
   def check_win_column(chip)
+    puts "col is eval"
     current_row = chip.row
     column = chip.column
     counter = 1
 
-    until grid[current_row + 1].nil? or grid[current_row + 1][column].color != chip.color or counter == 3
+    until grid[current_row + 1].nil? or grid[current_row + 1][column].color != chip.color or counter == 4
       current_row += 1
       counter += 1
     end
 
     
     #puts "col-counter: #{counter}"
-    return true if counter == 3
+    return true if counter == 4
   end
 
   def check_win_diagonal_left_to_right(chip)
+    puts "ltr is eval"
     counter = 1
 
     current_row = chip.row
     current_column = chip.column
 
-    until grid[current_row - 1].nil? or grid[current_row - 1][current_column - 1].nil? or (current_row - 1) < 0 or (current_column - 1) < 0 or grid[current_row - 1][current_column -1].color != chip.color or counter == 3
+    until grid[current_row - 1].nil? or grid[current_row - 1][current_column - 1].nil? or (current_row - 1) < 0 or (current_column - 1) < 0 or grid[current_row - 1][current_column -1].color != chip.color or counter == 4
       current_row -= 1
       current_column -=1
       counter += 1
@@ -108,22 +112,23 @@ class Game
 
     current_row = chip.row
     current_column = chip.column
-    until grid[current_row + 1].nil? or grid[current_row + 1][current_column + 1].nil? or grid[current_row + 1][current_column + 1].color != chip.color or counter == 3
+    until grid[current_row + 1].nil? or grid[current_row + 1][current_column + 1].nil? or grid[current_row + 1][current_column + 1].color != chip.color or counter == 4
       current_row += 1
       current_column +=1
       counter += 1
     end
 
     #puts "dia-left-right-counter: #{counter}"
-    return true if counter == 3
+    return true if counter == 4
   end
 
   def check_win_diagonal_right_to_left(chip)
+    puts "rtl is eval"
     counter = 1
 
     current_row = chip.row
     current_column = chip.column
-    until grid[current_row - 1].nil? or grid[current_row - 1][current_column + 1].nil? or (current_row - 1) < 0 or grid[current_row - 1][current_column + 1].color != chip.color or counter == 3
+    until grid[current_row - 1].nil? or grid[current_row - 1][current_column + 1].nil? or (current_row - 1) < 0 or grid[current_row - 1][current_column + 1].color != chip.color or counter == 4
       current_row -= 1
       current_column +=1
       counter += 1
@@ -131,14 +136,14 @@ class Game
 
     current_row = chip.row
     current_column = chip.column
-    until grid[current_row + 1].nil? or grid[current_row + 1][current_column - 1].nil? or (current_column - 1) < 0 or grid[current_row + 1][current_column - 1].color != chip.color or counter == 3
+    until grid[current_row + 1].nil? or grid[current_row + 1][current_column - 1].nil? or (current_column - 1) < 0 or grid[current_row + 1][current_column - 1].color != chip.color or counter == 4
       current_row += 1
       current_column -=1
       counter += 1
     end
 
     #puts "dia-right-left-counter: #{counter}"
-    return true if counter == 3
+    return true if counter == 4
   end
 
   def play_game
