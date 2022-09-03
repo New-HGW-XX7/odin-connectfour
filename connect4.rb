@@ -17,9 +17,9 @@ class Game
           end
         else
           if counter == 3
-            print "#{value}\n"
+            print "#{value.color}\n"
           else
-            print "#{value} "
+            print "#{value.color} "
           end
         end
       end
@@ -31,19 +31,33 @@ class Game
     gets.chomp
   end
 
-  def take_chip(column, object = 'Y')
-    return puts 'Column full' if column_full?(column)
-    current_row = 0
-    until grid[current_row + 1].nil? or grid[current_row + 1][column] == 'Y'
-      current_row += 1
-    end
-    self.grid[current_row][column] = object
-  end
-
   def column_full?(column)
     !grid[0][column].nil?
   end
 
+  def take_chip(column, object = Chip.new('Y'))
+    return puts 'Column full' if column_full?(column)
+    current_row = 0
+    until grid[current_row + 1].nil? or grid[current_row + 1][column].class == Chip
+      current_row += 1
+    end
+    self.grid[current_row][column] = object
+    # object.row = current_row
+    # object.column = column
+    # return object to be evaluated by win checkers
+  end
+
+
+end
+
+class Chip
+  attr_reader :color
+  attr_accessor :row, :column
+  def initialize(color = nil)
+    @color = color
+    @row = nil
+    @column = nil
+  end
 end
 
 game = Game.new
