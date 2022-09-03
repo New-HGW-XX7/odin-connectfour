@@ -32,7 +32,8 @@ class Game
       puts "Player #{player_num}, choose a column"
       chosen_column = gets.chomp.to_i
       puts "Column full." if column_full?(chosen_column)
-      valid_input = true unless column_full?(chosen_column)
+      puts "Must be number between 0 and 6." if chosen_column < 0 or chosen_column > 6
+      valid_input = true unless column_full?(chosen_column) or chosen_column < 0 or chosen_column > 6
     end
     chosen_column
   end
@@ -59,7 +60,7 @@ class Game
   end
 
   def check_win_row(chip)
-    puts "row is eval"
+    #puts "row is eval"
     row = grid[chip.row]
     counter = 1
 
@@ -82,7 +83,7 @@ class Game
   end
 
   def check_win_column(chip)
-    puts "col is eval"
+    #puts "col is eval"
     current_row = chip.row
     column = chip.column
     counter = 1
@@ -98,7 +99,7 @@ class Game
   end
 
   def check_win_diagonal_left_to_right(chip)
-    puts "ltr is eval"
+    #puts "ltr is eval"
     counter = 1
 
     current_row = chip.row
@@ -123,7 +124,7 @@ class Game
   end
 
   def check_win_diagonal_right_to_left(chip)
-    puts "rtl is eval"
+    #puts "rtl is eval"
     counter = 1
 
     current_row = chip.row
@@ -181,8 +182,8 @@ class Chip
   end
 end
 
-game = Game.new
-game.play_game
-
 # Player 1 is Y
 # Player 2 is R
+
+game = Game.new
+game.play_game
