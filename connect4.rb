@@ -1,6 +1,6 @@
 class Game
   attr_accessor :board
   def initialize
-    @board = nil
+    @board = Array.new(3) { Array.new(3, nil) }
   end
 end
