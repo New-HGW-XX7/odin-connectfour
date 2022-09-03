@@ -27,4 +27,13 @@ describe Game do
       expect(game.column_full?(0)).to be true
     end
   end
+
+  describe '#game_over?' do
+    it 'returns true if all columns are full' do
+      game.grid[0][0] = 'x'
+      game.grid[0][1] = 'x'
+      game.grid[0][2] = 'x'
+      expect(game.game_over?).to be true
+    end
+  end
 end

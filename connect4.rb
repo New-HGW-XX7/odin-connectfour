@@ -35,13 +35,19 @@ class Game
     !grid[0][column].nil?
   end
 
-  def take_chip(column, object = Chip.new('Y'))
+  def game_over?
+    column_full?(0) and column_full?(1) and column_full?(2)
+    # or one win checker
+  end
+
+  def take_chip(column, player_num = 0)
     return puts 'Column full' if column_full?(column)
+    player_num == 1 ? chip = Chip.new('Y') : chip = Chip.new('R')
     current_row = 0
     until grid[current_row + 1].nil? or grid[current_row + 1][column].class == Chip
       current_row += 1
     end
-    self.grid[current_row][column] = object
+    self.grid[current_row][column] = chip
     # object.row = current_row
     # object.column = column
     # return object to be evaluated by win checkers
@@ -64,7 +70,6 @@ game = Game.new
 game.print_grid
 puts "\n\n"
 game.take_chip(1)
-game.take_chip(1)
-game.take_chip(1)
 game.print_grid
-game.take_chip(1)
+# Player 1 is Y
+# Player 2 is R
