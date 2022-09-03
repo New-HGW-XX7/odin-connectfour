@@ -11,15 +11,15 @@ class Game
         counter += 1
         if value.nil?
           if counter == 3
-            print "nil\n"
+            print "[   ]\n"
           else
-            print "nil "
+            print "[   ] "
           end
         else
           if counter == 3
-            print "#{value.color}\n"
+            print "[ #{value.color} ]\n"
           else
-            print "#{value.color} "
+            print "[ #{value.color} ] "
           end
         end
       end
