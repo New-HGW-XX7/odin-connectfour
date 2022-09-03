@@ -1,6 +1,31 @@
 class Game
-  attr_accessor :board
+  attr_accessor :grid
   def initialize
-    @board = Array.new(3) { Array.new(3, nil) }
+    @grid = Array.new(3) { Array.new(3, nil) }
+  end
+
+  def print_grid
+    grid.each do |subarr|
+      counter = 0
+      subarr.each do |value|
+        counter += 1
+        if value.nil?
+          if counter == 3
+            print "nil\n"
+          else
+            print "nil "
+          end
+        else
+          if counter == 3
+            print "#{value.color}\n"
+          else
+            print "#{value.color} "
+          end
+        end
+      end
+    end
   end
 end
+
+game = Game.new
+game.print_grid
