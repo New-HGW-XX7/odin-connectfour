@@ -35,7 +35,7 @@ class Game
     !grid[0][column].nil?
   end
 
-  def game_over?
+  def game_over?#(chip)
     column_full?(0) and column_full?(1) and column_full?(2)
     # or one win checker
   end
@@ -48,12 +48,32 @@ class Game
       current_row += 1
     end
     self.grid[current_row][column] = chip
-    # object.row = current_row
-    # object.column = column
-    # return object to be evaluated by win checkers
+    chip.row = current_row
+    p chip.row
+    chip.column = column
+    chip
   end
 
+  def check_win_row(chip)
+    row = grid[chip.row]
+    
+    index = chip.column
+    counter = 1
 
+    until row[index + 1].nil? or row[index + 1].color != chip.color or counter == 3
+      index += 1
+      counter += 1
+    end
+    puts counter
+    # return true if counter == 3
+    index = chip.column
+    until row[index - 1].nil? or row[index - 1].color != chip.color or counter == 3
+      index -= 1
+      counter += 1
+    end
+    # return true if counter == 3
+    puts counter
+  end
 end
 
 class Chip
@@ -69,7 +89,11 @@ end
 game = Game.new
 game.print_grid
 puts "\n\n"
-game.take_chip(1)
+game.take_chip(0)
+game.take_chip(2)
+chip = game.take_chip(1)
 game.print_grid
+game.check_win_row(chip)
+
 # Player 1 is Y
 # Player 2 is R
