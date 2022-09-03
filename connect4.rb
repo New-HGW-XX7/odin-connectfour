@@ -28,7 +28,7 @@ class Game
 
   def player_column_choice(player_num)
     puts "Player #{player_num}, choose a column"
-    gets.chomp
+    gets.chomp.to_i
   end
 
   def column_full?(column)
@@ -49,7 +49,6 @@ class Game
     end
     self.grid[current_row][column] = chip
     chip.row = current_row
-    p chip.row
     chip.column = column
     chip
   end
@@ -87,6 +86,28 @@ class Game
     # return true if counter == 3
     puts "col-counter: #{counter}"
   end
+
+  def check_win_diagonal_left_to_right(chip)
+    counter = 1
+
+    current_row = chip.row
+    current_column = chip.column
+    until grid[current_row - 1].nil? or grid[current_row - 1][current_column - 1].nil? or grid[current_row - 1][current_column -1].color != chip.color or counter == 3
+      current_row -= 1
+      current_column -=1
+      counter += 1
+    end
+
+    current_row = chip.row
+    current_column = chip.column
+    until grid[current_row + 1].nil? or grid[current_row + 1][current_column + 1].nil? or grid[current_row + 1][current_column + 1].color != chip.color or counter == 3
+      current_row += 1
+      current_column +=1
+      counter += 1
+    end
+
+    puts "dia-left-right-counter: #{counter}"
+  end
 end
 
 class Chip
@@ -102,12 +123,14 @@ end
 game = Game.new
 game.print_grid
 puts "\n\n"
-game.take_chip(2)
-game.take_chip(2)
+game.take_chip(1)
+game.take_chip(1)
+game.take_chip(1)
 chip = game.take_chip(2)
 game.print_grid
 game.check_win_row(chip)
 game.check_win_column(chip)
+game.check_win_diagonal_left_to_right(chip)
 
 # Player 1 is Y
 # Player 2 is R
