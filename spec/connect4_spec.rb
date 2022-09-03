@@ -20,4 +20,11 @@ describe Game do
       game.player_column_choice(1)
     end
   end
+
+  describe '#column_full?' do
+    it 'returns true if selected column is not nil in top row' do
+      game.grid[0][0] = 'x'
+      expect(game.column_full?(0)).to be true
+    end
+  end
 end

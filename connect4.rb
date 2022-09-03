@@ -17,9 +17,9 @@ class Game
           end
         else
           if counter == 3
-            print "#{value.color}\n"
+            print "#{value}\n"
           else
-            print "#{value.color} "
+            print "#{value} "
           end
         end
       end
@@ -30,8 +30,27 @@ class Game
     puts "Player #{player_num}, choose a column"
     gets.chomp
   end
-   
+
+  def take_chip(column, object = 'Y')
+    return puts 'Column full' if column_full?(column)
+    current_row = 0
+    until grid[current_row + 1].nil? or grid[current_row + 1][column] == 'Y'
+      current_row += 1
+    end
+    self.grid[current_row][column] = object
+  end
+
+  def column_full?(column)
+    !grid[0][column].nil?
+  end
+
 end
 
-# game = Game.new
-# game.print_grid
+game = Game.new
+game.print_grid
+puts "\n\n"
+game.take_chip(1)
+game.take_chip(1)
+game.take_chip(1)
+game.print_grid
+game.take_chip(1)
